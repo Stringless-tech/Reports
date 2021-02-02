@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -18,8 +19,21 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
+            ->add('name', TextType::class,[
+                'mapped' => false,
+                'label' => 'Nazwa firmy'
+            ])
+            ->add('phone', TextType::class,[
+                'mapped' => false,
+                'label' => 'Telefon'
+            ])
+            ->add('NIP', TextType::class,[
+                'mapped' => false,
+                'label' => 'NIP '
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'label' => 'Akceptuje warunki',
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',

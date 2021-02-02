@@ -36,6 +36,12 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $company;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -112,5 +118,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+
+        return $this;
     }
 }
