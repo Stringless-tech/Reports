@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Strona główna{% endblock %}
+
+{% block body %}
+    <h1>Strona główna</h1>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <a href="{{ path('app_logout') }}">Wyloguj</a>
+    {% else %}
+    <a href="{{ path('app_register') }}">Rejestracja</a>
+    <a href="{{ path('app_login') }}">Logowanie</a>
+   {% endif %}
+    {% if is_granted('ROLE_CLIENT') %}
+        Klient
+    {% endif %}
+    {% if is_granted('ROLE_USER') %}
+        USER
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        ADMIN
+    {% endif %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        SUPER ADMIN
+    {% endif %}
+{% endblock %}
