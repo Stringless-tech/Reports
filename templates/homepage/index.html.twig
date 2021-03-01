@@ -5,16 +5,18 @@
 {% block body %}
     <h1>Strona główna</h1>
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <a href="{{ path('app_logout') }}">Wyloguj</a>
+        <a href="{{ path('app_logout') }}">Wyloguj</a>
+        <a href="{{ path('user') }}">Użytkownicy</a>
+        <a href="{{ path('lead') }}">Leady</a>
     {% else %}
-    <a href="{{ path('app_register') }}">Rejestracja</a>
-    <a href="{{ path('app_login') }}">Logowanie</a>
+        <a href="{{ path('app_register') }}">Rejestracja</a>
+        <a href="{{ path('app_login') }}">Logowanie</a>
    {% endif %}
-    {% if is_granted('ROLE_CLIENT') %}
-        Klient
+    {% if is_granted('ROLE_WORKER') %}
+        Pracownik
     {% endif %}
     {% if is_granted('ROLE_USER') %}
-        USER
+        Klient
     {% endif %}
     {% if is_granted('ROLE_ADMIN') %}
         ADMIN
