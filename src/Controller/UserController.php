@@ -13,29 +13,50 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
+    private $userRepo;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepo = $userRepository;
+    }
+
     /**
      * @Route("/user", name="user")
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(): Response
     {
-        $users = $userRepository->findBy(['company' => $this->getUser()->getCompany()]);
+        $users = $this->userRepo->findBy(['company' => $this->getUser()->getCompany()]);
 
         return $this->render('user/index.html.twig', [
             'users' => $users,
         ]);
     }
+
     /**
      * @Route("/user/create", name="user-create")
      */
     public function create(Request $request,UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
+        return $this->form($user,$request,$passwordEncoder);
+    }
+
+    /**
+     * @Route("/user/update/{id}", name="user-update")
+     */
+    public function update($id,Request $request,UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user = $this->userRepo->find($id);
+        return $this->form($user,$request,$passwordEncoder);
+    }
+
+    public function form($user,$request,$passwordEncoder)
+    {
         $form = $this->createForm(UserType::class,$user);
         $form->handleRequest($request);
 
         if($form->isSubmitted())
         {
-
             $loggedUserCompany = $this->getUser()->getCompany();
             $em = $this->getDoctrine()->getManager();
             $user->setCompany($loggedUserCompany);
@@ -45,6 +66,7 @@ class UserController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+
             $em->persist($user);
             $em->flush();
             return $this->redirect($this->generateUrl('user'));
@@ -54,4 +76,29 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/user/remove/{id}", name="user-remove")
+     */
+    public function remove($id)
+    {
+        $user = $this->userRepo->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('user'));
+    }
+
+    /**
+     * @Route("/user/show/{id}", name="user-show")
+     */
+    public function show($id)
+    {
+        $user = $this->userRepo->find($id);
+        return $this->render('user/show.html.twig',[
+            'user' => $user
+        ]);
+    }
 }
+

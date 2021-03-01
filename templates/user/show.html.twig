@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dany użytkownik{% endblock %}
+
+{% block body %}
+    <h1>Dany użytkownik</h1>
+    <p>{{ user.email }}</p>
+    <p>{{ user.roles[0] }}</p>
+{% endblock %}

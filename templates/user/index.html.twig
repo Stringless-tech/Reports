@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}Lista użytkowników{% endblock %}
 
 {% block body %}
     <h1>Lista użytkowników</h1>
@@ -18,9 +18,9 @@
         {% for user in users %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
+                <td><a href="{{ path('user-show', {'id': user.id}) }}">{{ user.email }}</a></td>
                 <td>{{ user.roles[0] }}</td>
-                <td>Usuń / Edytuj</td>
+                <td><a href="{{ path('user-remove', {'id': user.id}) }}">Usuń</a> / <a href="{{ path('user-update', {'id': user.id}) }}">Edytuj</a></td>
             </tr>
         {% endfor %}
         </tbody>
