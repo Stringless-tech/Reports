@@ -42,6 +42,11 @@ class User implements UserInterface
      */
     private $company;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Lead::class, mappedBy="userClientId", cascade={"persist", "remove"})
+     */
+    private $lead;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,6 +133,28 @@ class User implements UserInterface
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getLead(): ?Lead
+    {
+        return $this->lead;
+    }
+
+    public function setLead(?Lead $lead): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($lead === null && $this->lead !== null) {
+            $this->lead->setUserClientId(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($lead !== null && $lead->getUserClientId() !== $this) {
+            $lead->setUserClientId($this);
+        }
+
+        $this->lead = $lead;
 
         return $this;
     }

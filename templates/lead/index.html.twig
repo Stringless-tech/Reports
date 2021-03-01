@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wszystkie Leady!{% endblock %}
+
+{% block body %}
+    <h1>Lista lead</h1>
+    <a href="{{ path('create-lead') }}">Dodaj lead</a>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lead in leads %}
+            <tr>
+                <td>{{ lead.id }}</td>
+                <td><a href="{{ path('show-lead', {'id': lead.id}) }}">{{ lead.name }}</a></td>
+                <td>{{ lead.email }}</td>
+                <td>{{ lead.phone }}</td>
+                <td><a href="{{ path('remove-lead', {'id': lead.id}) }}">Usuń</a> / <a href="{{ path('update-lead', {'id': lead.id}) }}">Edytuj</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

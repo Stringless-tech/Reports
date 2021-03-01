@@ -54,9 +54,15 @@ class Company
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Lead::class, mappedBy="company")
+     */
+    private $leads;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->leads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,4 +171,35 @@ class Company
 
         return $this;
     }
+
+    /**
+     * @return Collection|Lead[]
+     */
+    public function getLeads(): Collection
+    {
+        return $this->leads;
+    }
+
+    public function addLead(Lead $lead): self
+    {
+        if (!$this->leads->contains($lead)) {
+            $this->leads[] = $lead;
+            $lead->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLead(Lead $lead): self
+    {
+        if ($this->leads->removeElement($lead)) {
+            // set the owning side to null (unless already changed)
+            if ($lead->getCompany() === $this) {
+                $lead->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
