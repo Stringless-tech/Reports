@@ -38,6 +38,6 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
     role_hierarchy:
-        ROLE_USER: ROLE_CLIENT
-        ROLE_ADMIN: [ ROLE_USER, ROLE_ALLOWED_TO_SWITCH ]
+        ROLE_WORKER: ROLE_USER
+        ROLE_ADMIN: ROLE_WORKER
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
